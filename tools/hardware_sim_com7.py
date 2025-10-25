@@ -67,7 +67,7 @@ class HardwareSimulator:
     
     def __init__(self):
         # Serial configuration
-        self.port = os.getenv('DEV_UART_PORT_SIMULATOR', 'COM7')
+        self.port = '/dev/serial/0'
         self.baudrate = int(os.getenv('UART_BAUDRATE', '9600'))
         self.ser = None
         self.msg_id = 0

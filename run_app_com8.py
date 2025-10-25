@@ -30,8 +30,8 @@ from src.main import ContainerReturnSystem
 def main():
     """Run application using development port configuration"""
     # Get port configuration from environment
-    app_port = os.getenv('DEV_UART_PORT_APP', 'COM8')
-    simulator_port = os.getenv('DEV_UART_PORT_SIMULATOR', 'COM7')
+    app_port = os.getenv('DEV_UART_PORT_APP', '/dev/serial/1')
+    simulator_port = os.getenv('DEV_UART_PORT_SIMULATOR', '/dev/serial/0')
     baudrate = os.getenv('UART_BAUDRATE', '9600')
     
     print("Container Return System - Development Mode")
