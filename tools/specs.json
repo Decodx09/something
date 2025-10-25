@@ -1,0 +1,177 @@
+{
+  "frame_structure": {
+    "format": "START_BYTE (0x7B) + TYPE + ID + LENGTH + PAYLOAD + END_BYTE (0x7D)",
+    "start_byte": "0x7B",
+    "end_byte": "0x7D",
+    "description": "All messages follow this frame structure with start and end bytes"
+  },
+  "protocol_messages": [
+    {
+      "init_msg": "{",
+      "type": "0x00",
+      "type_name": "ACK",
+      "sender": "Micro and Pi",
+      "payload_length": 2,
+      "description": "Acknowledgment message",
+      "payload_structure": {
+        "type": {
+          "description": "type of the frame the ack is replying to",
+          "data_type": "byte"
+        },
+        "id": {
+          "description": "count of the frame the ack is replying to",
+          "data_type": "byte"
+        }
+      }
+    },
+    {
+      "init_msg": "{",
+      "type": "0x01",
+      "type_name": "Get sensor Status",
+      "sender": "Pi",
+      "payload_length": 0,
+      "description": "The micro will reply with a sensor state change message (0x02) for each sensor type",
+      "payload_structure": null
+    },
+    {
+      "init_msg": "{",
+      "type": "0x02",
+      "type_name": "Sensor state change",
+      "sender": "Micro",
+      "payload_length": 2,
+      "description": "Reports sensor state changes",
+      "payload_structure": {
+        "sensor_type": {
+          "description": "Type of sensor reporting state change",
+          "data_type": "byte",
+          "values": {
+            "0x00": "cover sensor",
+            "0x01": "container sensor"
+          }
+        },
+        "new_status": {
+          "description": "New status of the sensor",
+          "data_type": "byte",
+          "values": {
+            "0x00": "no detection",
+            "0x01": "detection"
+          }
+        }
+      }
+    },
+    {
+      "init_msg": "{",
+      "type": "0x03",
+      "type_name": "Restart",
+      "sender": "Pi",
+      "payload_length": 0,
+      "description": "Used to ask the micro to restart",
+      "payload_structure": null
+    },
+    {
+      "init_msg": "{",
+      "type": "0x04",
+      "type_name": "Actuators movement",
+      "sender": "Pi",
+      "payload_length": 2,
+      "description": "Controls actuator movement with specified type and action. Standard functionality only supports store action (0x00) for maintenance or debugging. Pi can ask device to open (0x01) or close (0x02) actuators.",
+      "payload_structure": {
+        "actuator_type": {
+          "description": "Type of actuator to control",
+          "data_type": "byte",
+          "values": {
+            "0x00": "cover actuator",
+            "0x01": "container actuator"
+          }
+        },
+        "action": {
+          "description": "Action to perform on actuator",
+          "data_type": "byte",
+          "values": {
+            "0x00": "store (open and close)",
+            "0x01": "open",
+            "0x02": "close"
+          }
+        }
+      }
+    },
+    {
+      "init_msg": "{",
+      "type": "0x05",
+      "type_name": "Light management",
+      "sender": "Pi",
+      "payload_length": 3,
+      "description": "Controls lighting system with position, color and type parameters",
+      "payload_structure": {
+        "position": {
+          "description": "Position/location of light to control",
+          "data_type": "byte",
+          "values": {
+            "0x00": "Container",
+            "0x01": "Cover"
+          }
+        },
+        "light_color": {
+          "description": "Color/operation of light",
+          "data_type": "byte",
+          "values": {
+            "0x00": "White Turn On",
+            "0x01": "Red Turn On",
+            "0x02": "Green Turn On",
+            "0x03": "Disable all lights"
+          }
+        },
+        "light_type": {
+          "description": "Type of light behavior",
+          "data_type": "byte",
+          "values": {
+            "0x00": "Steady",
+            "0x01": "Blinking"
+          }
+        }
+      }
+    },
+    {
+      "init_msg": "{",
+      "type": "0x06",
+      "type_name": "Button pushed",
+      "sender": "Micro",
+      "payload_length": 0,
+      "description": "Used to inform the Pi that the button has been pushed",
+      "payload_structure": null
+    },
+    {
+      "init_msg": "{",
+      "type": "0x07",
+      "type_name": "Error Msg",
+      "sender": "Micro",
+      "payload_length": "Up to 1000",
+      "description": "Used to inform the Pi that the micro has an error",
+      "payload_structure": {
+        "error_data": {
+          "description": "Variable length error information",
+          "data_type": "variable",
+          "max_length": 1000
+        }
+      }
+    },
+    {
+      "init_msg": "{",
+      "type": "0x08",
+      "type_name": "Door Control",
+      "sender": "Pi",
+      "payload_length": 1,
+      "description": "Controls door blocking mechanism",
+      "payload_structure": {
+        "action": {
+          "description": "Action to perform on door blocking mechanism",
+          "data_type": "byte",
+          "values": {
+            "0x00": "block doors",
+            "0x01": "unblock doors"
+          }
+        }
+      }
+    }
+  ]
+}
